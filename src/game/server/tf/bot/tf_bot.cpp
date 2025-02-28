@@ -76,6 +76,9 @@ extern ConVar tf_bot_path_lookahead_range;
 
 extern ConVar tf_mvm_miniboss_scale;
 
+// @bp
+extern ConVar nb_blind;
+
 
 //-----------------------------------------------------------------------------------------------------
 bool IsPlayerClassname( const char *string )
@@ -4620,6 +4623,12 @@ Action< CTFBot > *CTFBot::OpportunisticallyUseWeaponAbilities( void )
 // mostly for MvM - pick a random enemy player that is not in their spawn room
 CTFPlayer *CTFBot::SelectRandomReachableEnemy( void )
 {
+	// @bp
+	if ( nb_blind.GetBool() )
+	{
+		return NULL;
+	}
+
 	CUtlVector< CTFPlayer * > livePlayerVector;
 	CollectPlayers( &livePlayerVector, GetEnemyTeam( GetTeamNumber() ), COLLECT_ONLY_LIVING_PLAYERS );
 
