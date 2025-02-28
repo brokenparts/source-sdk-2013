@@ -297,6 +297,42 @@ extern ConVar mp_developer;
 extern ConVar bot_mimic;
 #endif // _DEBUG || STAGING_ONLY 
 
+// @bp
+CON_COMMAND( bp_teleporter_hint_test, "" )
+{
+	CBasePlayer* pPlayer = UTIL_GetListenServerHost();
+	if ( pPlayer )
+	{
+		Vector vecForward;
+		AngleVectors( pPlayer->EyeAngles(), &vecForward );
+
+		trace_t tr;
+		UTIL_TraceLine( pPlayer->EyePosition(), pPlayer->EyePosition() + vecForward * 250.0f, MASK_ALL, pPlayer, COLLISION_GROUP_NONE, &tr );
+
+		CObjectTeleporter* pTeleporter = dynamic_cast< CObjectTeleporter* >(tr.m_pEnt);
+
+		if ( pTeleporter && pTeleporter->IsEntrance() && pTeleporter->IsMatchingTeleporterReady() )
+		{
+			CObjectTeleporter* pExit = pTeleporter->GetMatchingTeleporter();
+			Assert( pExit );
+
+			IGameEvent* pEvent = gameeventmanager->CreateEvent( "show_annotation" );
+			if ( pEvent )
+			{
+				Vector vecExit = pExit->GetAbsOrigin();
+				pEvent->SetString( "text", "Exit Here" );
+				pEvent->SetInt( "id", pPlayer->entindex() );
+				pEvent->SetFloat( "worldPosX", vecExit.x );
+				pEvent->SetFloat( "worldPosY", vecExit.y );
+				pEvent->SetFloat( "worldPosZ", vecExit.z );
+				pEvent->SetFloat( "lifetime", 4.0f );
+				pEvent->SetInt( "follow_entindex", pExit->entindex() );
+				gameeventmanager->FireEvent( pEvent );
+			}
+		}
+	}
+}
+
 extern CBaseEntity *FindPickerEntity( CBasePlayer *pPlayer );
 extern bool CanScatterGunKnockBack( CTFWeaponBase *pWeapon, float flDamage, float flDistanceSq );
 extern bool IsCustomGameMode();
