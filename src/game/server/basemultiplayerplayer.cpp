@@ -12,6 +12,11 @@
 // Minimum interval between rate-limited commands that players can run.
 #define COMMAND_MAX_RATE  0.3
 
+// @bp
+#ifdef TF_DLL
+extern ConVar bp_bypass_command_rate_restriction;
+#endif
+
 CBaseMultiplayerPlayer::CBaseMultiplayerPlayer()
 {
 	m_iCurrentConcept = MP_CONCEPT_NONE;
@@ -145,6 +150,14 @@ bool CBaseMultiplayerPlayer::ShouldRunRateLimitedCommand( const CCommand &args )
 bool CBaseMultiplayerPlayer::ShouldRunRateLimitedCommand( const char *pszCommand )
 {
 	const char *pcmd = pszCommand;
+
+	// @bp
+#ifdef TF_DLL
+	if ( bp_bypass_command_rate_restriction.GetBool() )
+	{
+		return true;
+	}
+#endif
 
 	int i = m_RateLimitLastCommandTimes.Find( pcmd );
 	if ( i == m_RateLimitLastCommandTimes.InvalidIndex() )
