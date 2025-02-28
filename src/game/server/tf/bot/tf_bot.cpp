@@ -64,6 +64,9 @@ ConVar tf_bot_debug_tags( "tf_bot_debug_tags", "0", FCVAR_CHEAT, "ent_text will 
 
 ConVar tf_bot_spawn_use_preset_roster( "tf_bot_spawn_use_preset_roster", "1", FCVAR_CHEAT, "Bot will choose class from a preset class table." );
 
+// @bp
+ConVar bp_tfbot_medic_push_behavior_fix( "bp_tfbot_medic_push_behavior_fix", "0", FCVAR_GAMEDLL );
+
 extern ConVar tf_bot_sniper_spot_max_count;
 extern ConVar tf_bot_fire_weapon_min_time;
 extern ConVar tf_bot_sniper_misfire_chance;
@@ -1516,7 +1519,12 @@ void CTFBot::AvoidPlayers( CUserCmd *pCmd )
 			if ( !them->IsPlayerClass( TF_CLASS_MEDIC ) )
 			{
 				// medics only avoid other medics, so they stay with their patient
-				continue;
+
+				// @bp
+				if ( !(bp_tfbot_medic_push_behavior_fix.GetBool() && !them->IsBot()) )
+				{
+					continue;
+				}
 			}
 		}
 		else if ( IsInASquad() )

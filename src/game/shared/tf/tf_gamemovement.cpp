@@ -77,6 +77,9 @@ ConVar tf_movement_lost_footing_restick( "tf_movement_lost_footing_restick", "50
 ConVar tf_movement_lost_footing_friction( "tf_movement_lost_footing_friction", "0.1", FCVAR_REPLICATED | FCVAR_CHEAT,
                                           "Ground friction for players who have lost their footing" );
 
+// @bp
+ConVar bp_avoidteammates_pushaway_filter( "bp_avoidteammates_pushaway_filter", "-1", FCVAR_REPLICATED, "Don't push away a specific entity" );
+
 extern ConVar cl_forwardspeed;
 extern ConVar cl_backspeed;
 extern ConVar cl_sidespeed;

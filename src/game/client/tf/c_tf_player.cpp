@@ -6224,6 +6224,12 @@ void C_TFPlayer::AvoidPlayers( CUserCmd *pCmd )
 	if ( !tf_avoidteammates.GetBool() || !tf_avoidteammates_pushaway.GetBool() )
 		return;
 
+	// @bp
+	if ( bp_avoidteammates_pushaway_filter.GetInt() == entindex() )
+	{
+		return;
+	}
+
 	// Don't test if the player doesn't exist or is dead.
 	if ( IsAlive() == false )
 		return;

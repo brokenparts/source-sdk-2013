@@ -75,6 +75,9 @@ extern ConVar	tf_ctf_bonus_time;
 extern ConVar	tf_mvm_respec_enabled;
 extern ConVar	tf_spawn_glows_duration;
 
+// @bp
+extern ConVar	bp_avoidteammates_pushaway_filter;
+
 #ifdef GAME_DLL
 extern ConVar mp_tournament_prevent_team_switch_on_readyup;
 #endif
